@@ -1,0 +1,12 @@
+<div [ngBusy]="busy"></div>
+<div class="mt20" fxLayoutAlign="center center">
+  <md-card fxFlex.gt-md="40" fxFlex.gt-sm="50" fxFlex="60" fxFlex.xs="90">
+    <md-card-header fxLayout="row" fxLayoutAlign="center center">
+      <h3>{{title}}</h3>
+      <button type="button" md-button md-raised-button routerLink="/admin/reviews" class="close">Back<md-icon>keyboard_return</md-icon></button>
+    </md-card-header>
+    <md-card-content>
+      <edit [item]="review" [fields]="fields" api="reviews" (save)="save($event)"></edit>
+    </md-card-content>
+  </md-card>
+</div>

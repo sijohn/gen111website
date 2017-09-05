@@ -1,0 +1,59 @@
+<md-card *ngFor="let order of orders">
+  <md-card-header class="m10">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between start" fxFlex>
+      <div>
+        <md-card-title>OrderNo: {{order.orderNo}}</md-card-title>
+        <md-card-subtitle>{{order.created_at | date}}</md-card-subtitle>
+      </div>
+      <div class="total">Order Total <b>{{order.amount.total / order.amount.exchange_rate | currency : Settings.currency.code : true}}</b></div>
+      <div>
+        <md-card-title>Payment</md-card-title>
+        <md-card-subtitle> {{order.payment?.method}} </md-card-subtitle>
+      </div>
+      <div fxLayout="row">
+        <div>
+          <md-card-title>Order Status</md-card-title>
+          <md-card-subtitle>
+            <md-select name="orderStatus-{{i}}" [(ngModel)]="order.status" (change)="orderStatus(order, $event)" style="width:140px;"
+              placeholder="Order Status" floatPlaceholder="never">
+              <md-option *ngFor="let o of Settings.orderStatus" [value]="o">{{o}}</md-option>
+            </md-select>
+          </md-card-subtitle>
+        </div>
+        <div>
+          <md-card-title>Payment Status</md-card-title>
+          <md-card-subtitle *ngIf="order.payment">
+            <md-select ngModel name="paymentStatus-{{i}}" [(ngModel)]="order.payment.state" placeholder="Payment Status" floatPlaceholder="never"
+              (change)="paymentStatus(order,$event)">
+              <md-option *ngFor="let o of Settings.paymentStatus" [value]="o">{{o}}</md-option>
+            </md-select>
+          </md-card-subtitle>
+        </div>
+      </div>
+    </div>
+  </md-card-header>
+  <md-card-content fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between start">
+    <div class="description" fxFlex>
+      <md-list>
+        <md-list-item *ngFor="let i of order.items" fxLayout="row">
+          <img md-list-avatar src="{{i.url}}" onError="this.src='/assets/img/product-placeholder.png'" style="height:75px;" routerLink="/product/{{i.description}}/{{i.sku}}">
+          <div fxFlexOffset="2">
+            <div md-line><b><a class="product-link" routerLink="/product/{{i.description}}/{{i.sku}}">{{i.name}}</a></b></div>
+            <div md-line><b>Amount:</b> {{i.price / order.amount.exchange_rate | currency : Settings.currency.code : true}} x <b>{{i.quantity}}</b>
+            </div>
+          </div>
+        </md-list-item>
+      </md-list>
+    </div>
+    <div class="address">
+      <div md-line><b>Address</b></div>
+      <hr/>
+      <div md-line class="mute">
+        {{order.address.line1}}
+        <br/> {{order.address.city}}
+        <br/> {{order.address.country_code}}
+        <br/> {{order.address.postal_code}}
+      </div>
+    </div>
+  </md-card-content>
+</md-card>

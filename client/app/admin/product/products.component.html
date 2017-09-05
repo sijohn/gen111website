@@ -1,0 +1,78 @@
+<button md-fab class="floating-fab" *ngIf="!no.add" color="accent" routerLink="/admin/product/new">
+  <md-icon>add</md-icon>
+</button>
+<div [ngBusy]="busy"></div>
+
+<div class="app-content cp-container">
+  <md-card fxFlex>
+    <div fxLayout="row" fxLayoutAlign="space-between center" class="example-scrolling-content">
+      <h3>{{title}}</h3>
+      <span class="app-toolbar-filler"></span>
+      <div *ngIf="!no.search">
+        <button md-icon-button *ngIf="showFilter" (click)="showFilter=false">
+          <md-icon class="filtericon">search</md-icon>
+        </button>
+        <md-input-container *ngIf="showFilter" fxFlex>
+          <input type="text" [value]="filterText" placeholder="Filter Name" [formControl]="filterInput" mdInput autofocus/>
+        </md-input-container>
+        <button md-icon-button *ngIf="showFilter" (click)="showFilter=false;filterText='';flush();getData({ sort: '-updated_at' })">
+          <md-icon class="filtericon">close</md-icon>
+        </button>
+        <button md-icon-button *ngIf="!showFilter" (click)="showFilter=true">
+          <md-icon>filter_list</md-icon>
+        </button>
+      </div>
+      <export [data]="data" *ngIf="!no.export"></export>
+    </div>
+
+    <div class="mt20" fxLayout="column" fxLayoutAlign="center center">
+      <md-card *ngIf="!meta.busy && data.length===0" class="noproduct" fxLayoutAlign="center center" fxLayout="column">
+        <div>No {{title}} found</div>
+      </md-card>
+    </div>
+
+    <div infiniteScroll infiniteScrollDistance="2" infiniteScrollThrottle="500" (scrolled)="scroll()" scrollWindow="false" id="exportable"
+      *ngIf="data.length>0">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th *ngFor="let h of fie">
+              <a class="sort" (click)="reverse=!reverse;order(h.field)" *ngIf="!no.sort && !h.noSort" fxLayout="row">
+                {{h.heading | labelcase}}
+                <md-icon *ngIf="reverse && h.field === sort.predicate">arrow_downward</md-icon>
+                <md-icon *ngIf="!reverse && h.field === sort.predicate">arrow_upwards</md-icon>
+					    </a>
+              <span *ngIf="no.sort || h.noSort">
+                {{h.heading | labelcase}}
+              </span>
+            </th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of data; let i = index;">
+            <td>{{i+1}}</td>
+            <td *ngFor="let f of fie" [ngSwitch]="f.dataType">
+              <img src="{{d[f.field]}}" err-src="/assets/img/1px.png" width="100px" *ngSwitchCase="'image'" />
+              <img src="{{d.variants[0].image}}" err-src="/assets/img/1px.png" width="100px" *ngSwitchCase="'product-image'" />
+              <span *ngSwitchCase="'date'">{{d[f.field] | date}}</span>
+              <!--<md-slide-toggle [checked]="d[f.field]" *ngSwitchCase="'boolean'"></md-slide-toggle>-->
+              <md-checkbox [checked]="d[f.field]" *ngSwitchCase="'boolean'" disabled="true"></md-checkbox>
+              <a *ngSwitchCase="'product-detail'" routerLink="/product/{{d[f.slug]}}/{{d[f.id]}}">{{d[f.field]}}</a>
+              <span *ngSwitchDefault>{{d[f.field]}}</span>
+            </td>
+            <td>
+              <button *ngIf="!no.clone" md-icon-button (click)="clone(d)"><md-icon>content_copy</md-icon></button>
+              <button *ngIf="!no.edit" md-icon-button routerLink="{{url}}/{{d._id}}"><md-icon>edit</md-icon></button>
+              <button *ngIf="!no.delete" md-icon-button (click)="delete(d)"><md-icon>delete</md-icon></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="text-align:center" *ngIf="!meta.busy">
+      <button md-button md-raised-button (click)="scroll()" *ngIf="!meta.end"><md-icon>arrow_downwards</md-icon>Load More...</button>
+    </div>
+  </md-card>
+</div>

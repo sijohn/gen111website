@@ -1,0 +1,16 @@
+<div [formGroup]="featuresForm">
+  <td>
+    <md-select placeholder="Key" formControlName="key">
+      <md-option *ngFor="let o of features | unique: 'key'" value="{{o.key}}">
+        {{o.key}}
+      </md-option>
+    </md-select>
+  </td>
+  <td>
+    <md-select placeholder="Value" formControlName="val">
+      <md-option *ngFor="let o of features | filter: featuresForm.get('key').value | unique: 'val'" value="{{o.val}}">
+        {{o.val}}
+      </md-option>
+    </md-select>
+  </td>
+</div>
