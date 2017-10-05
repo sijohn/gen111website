@@ -1,0 +1,21 @@
+<button md-icon-button [mdMenuTriggerFor]="exportMenu">
+    <md-icon>cloud_download</md-icon>
+</button>
+<md-menu #exportMenu="mdMenu">
+    <button md-menu-item (click)="export('json', data)">
+        <md-icon>voicemail</md-icon>
+        <span>JSON</span>
+    </button>
+    <button md-menu-item (click)="export('text', data)">
+        <md-icon>notifications_off</md-icon>
+        <span>Text</span>
+    </button>
+    <button md-menu-item (click)="export('csv', data)">
+        <md-icon>dialpad</md-icon>
+        <span>CSV</span>
+    </button>
+    <button md-menu-item (click)="export('excel', data)">
+        <md-icon>dialpad</md-icon>
+        <span>Excel</span>
+    </button>
+</md-menu>

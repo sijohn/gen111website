@@ -1,0 +1,50 @@
+<md-toolbar color="primary">
+  <div fxLayout="row" fxFlex fxLayoutAlign="start center">
+    <div fxLayout="row" *ngIf="!searchBar">
+      <button class="app-icon-button" routerLink="/shop">
+        <i class="material-icons app-toolbar-menu">home</i>
+      </button>
+      <div routerLink="/shop" fxHide.xs *ngIf="!searchBar" class="brand">ShopNx</div>
+    </div>
+    <i class="material-icons clearSearchBarField noUserSelect" *ngIf="searchBar" (click)="show(false)">close</i>
+
+    <shopnx-search fxFlex fxHide fxShow.gt-sm *ngIf="!searchBar"></shopnx-search>
+    <shopnx-search fxFlex *ngIf="searchBar"></shopnx-search>
+
+    <div fxShow fxHide.gt-sm layoutAlign="center center" *ngIf="!searchBar">
+      <md-icon (click)="show(true)" class="search-icon">search</md-icon>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="end center">
+    <button md-raised-button class="mat-raised mat-accent" *ngIf="!searchBar" (click)="openCart()" [disabled]="cart.getTotalCount()===0">
+      <md-icon>shopping_cart</md-icon>
+      <span fxShow fxHide.xs>Cart ({{cart.getTotalCount()}}) - {{cart.getTotalPrice() | currency:Settings.currency.code:true}}</span>
+    </button>
+    <button md-button (click)="login()" *ngIf="!auth.loggedIn &&  !searchBar" fxLayout="column">
+      <md-icon>fingerprint</md-icon>
+      <span fxHide fxShow.gt-xs>Login / Signup</span>
+    </button>
+    <button md-button *ngIf="auth.loggedIn && !searchBar" routerLink="/admin/dashboard">
+      <md-icon *ngIf="!auth.loggedIn">fingerprint</md-icon>
+      <button md-fab *ngIf="auth.loggedIn" class="avatar">
+          <img src="{{auth.currentUser.avatar}}" alt="{{auth.currentUser.name}}"/>
+      </button>
+    <span fxShow="false" fxShow.gt-sm>{{auth.currentUser.name}}</span>
+    </button>
+    <button md-icon-button [mdMenuTriggerFor]="menu" *ngIf="auth.loggedIn && !searchBar">
+      <md-icon>more_vert</md-icon>
+    </button>
+    <md-menu #menu="mdMenu">
+      <div *ngFor="let item of Settings.menu">
+        <button md-menu-item *ngIf="auth.loggedIn && item.authenticate && auth.hasRole(item.authenticate)" routerLink="{{item.url}}">
+        <md-icon>{{item.icon}}</md-icon>
+        <span>{{item.name}}</span>
+      </button>
+      </div>
+      <button md-menu-item *ngIf="auth.loggedIn" (click)="auth.logout()">
+        <md-icon>vpn_key</md-icon>
+        <span>Logout</span>
+      </button>
+    </md-menu>
+  </div>
+</md-toolbar>

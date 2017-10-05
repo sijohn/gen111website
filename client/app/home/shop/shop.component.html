@@ -1,0 +1,136 @@
+<megamenu></megamenu>
+<md-sidenav-container class="products-container">
+  <md-sidenav #sidenav mode="side" [opened]="isLargeScreen()" class="filter-container">
+    <form [formGroup]="filterForm" #form autocomplete="false" novalidate>
+      <md-card>
+        <button class="close" md-button md-icon-button (click)="sidenav.close()"><md-icon>close</md-icon></button>
+        <md-card-content>
+          <h3>Adjust Price</h3>
+          <nouislider [config]="priceSliderConfig" [min]="priceRange.min" [max]="priceRange.max" (change)="priceSliderChanged($event)"
+            [tooltips]="[ true, true ]" style="margin-top: 4em;"></nouislider>
+        </md-card-content>
+      </md-card>
+      <md-card>
+        <md-card-content>
+          <h4>Filter Brands</h4>
+          <div class="filter-brands">
+            <div *ngFor="let i of brands">
+              <md-checkbox (click)="toggleBrands(i, fl.brands)">{{i.name}}</md-checkbox>
+            </div>
+          </div>
+        </md-card-content>
+      </md-card>
+      <div class="filter-features">
+        <md-card *ngFor="let k of features">
+          <md-card-content>
+            <h4>{{k.key}}</h4>
+            <p *ngFor="let i of k.v">
+              <md-checkbox (checked)="exists(i, fl.features[k.key])" (click)="toggleFeatures(i, k.key)">{{i}}</md-checkbox>
+            </p>
+          </md-card-content>
+        </md-card>
+      </div>
+    </form>
+  </md-sidenav>
+
+  <div [ngBusy]="busy"></div>
+
+  <div fxLayout="column" fxLayoutAlign="space-between center" fxFlex style="height:100px !important;">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" style="width:100%">
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <button class="app-icon-button" (click)="sidenav.toggle()">
+          <i class="material-icons app-toolbar-menu dark">filter_list</i>
+        </button>
+        <span>Showing {{meta.skip}} of {{meta.total}}</span>
+      </div>
+      <span class="app-toolbar-filler"></span>
+
+      <div fxLayout="row" fxLayoutAlign="start center" *ngIf="products.length>0">
+        <span fxHide.xs>Sort: &nbsp;</span>
+        <md-button-toggle-group #group="mdButtonToggleGroup">
+          <md-button-toggle value="price" (click)="sortNow('variants.price')">
+            {{Settings.currency.symbol}}
+            <md-icon>arrow_downward</md-icon>
+          </md-button-toggle>
+          <md-button-toggle value="-price" (click)="sortNow('-variants.price')">
+            {{Settings.currency.symbol}}
+            <md-icon>arrow_upward</md-icon>
+          </md-button-toggle>
+          <md-button-toggle value="name" (click)="sortNow('name')">
+            A-Z
+            <md-icon>arrow_downward</md-icon>
+          </md-button-toggle>
+          <md-button-toggle value="-name" (click)="sortNow('-name')">
+            Z-A
+            <md-icon>arrow_upward</md-icon>
+          </md-button-toggle>
+        </md-button-toggle-group>
+      </div>
+    </div>
+
+    <div class="applied-filters" fxLayout="row" fxLayoutAlign="center start">
+      <div *ngFor="let b of fl.brands" class="applied-filters">
+        <button mdButton md-raised-button>
+          <md-icon md-menu-align-target>verified_user</md-icon>
+          {{b.name}}
+        </button>
+      </div>
+      <button *ngIf="searchParam" md-raised-button routerLink="/shop">
+        <md-icon md-menu-align-target>subject</md-icon>
+        {{searchParam}}
+      </button>
+      <div *ngIf="categoryQueried && fl && fl.categories" class="applied-filters">
+        <button *ngFor="let c of fl.categories" md-raised-button>
+          <md-icon md-menu-align-target>subject</md-icon>
+          {{c.slug}}
+        </button>
+      </div>
+      <div *ngIf="fl.features.Type" class="applied-filters">
+        <button *ngFor="let f of fl.features.Type" md-raised-button>
+          <md-icon md-menu-align-target>format_shapes</md-icon>
+          {{f}}
+          <md-icon >close</md-icon>
+        </button>
+      </div>
+      <div *ngIf="fl.features.Fit" class="applied-filters">
+        <button *ngFor="let f of fl.features.Fit" md-raised-button>
+          <md-icon md-menu-align-target>format_shapes</md-icon>
+          {{f}}
+          <md-icon >close</md-icon>
+        </button>
+      </div>
+      <div *ngIf="fl.features.Fabric" class="applied-filters">
+        <button *ngFor="let f of fl.features.Fabric" md-raised-button>
+          <md-icon md-menu-align-target>format_shapes</md-icon>
+          {{f}}
+          <md-icon >close</md-icon>
+        </button>
+      </div>
+      <div *ngIf="fl.features.Neck" class="applied-filters">
+        <button *ngFor="let f of fl.features.Neck" md-raised-button>
+            <md-icon md-menu-align-target>format_shapes</md-icon>
+            {{f}}
+            <md-icon >close</md-icon>
+          </button>
+      </div>
+      <div *ngIf="fl.features.Color" class="applied-filters">
+        <button *ngFor="let f of fl.features.Color" md-raised-button>
+          <md-icon md-menu-align-target>format_shapes</md-icon>
+          {{f}}
+          <md-icon >close</md-icon>
+        </button>
+      </div>
+    </div>
+    <md-card *ngIf="!meta.busy && products.length===0" class="noproduct" fxLayoutAlign="center center" fxLayout="column">
+      <div>No Product match the search criteria</div>
+      <button md-button md-raised-button class="mat-primary" routerLink="/shop"><md-icon>home</md-icon>Browse All...</button>
+    </md-card>
+    <div class="product-cards" infinite-scroll infiniteScrollDistance="1" infiniteScrollThrottle="300" (scrolled)="scroll()"
+      fxFlex>
+      <product-card *ngFor="let product of products" [product]="product" class="product-card products"></product-card>
+    </div>
+  </div>
+</md-sidenav-container>
+<div style="text-align:center" *ngIf="!meta.busy">
+  <button md-button md-raised-button (click)="scroll()" *ngIf="!meta.end"><md-icon>arrow_downwards</md-icon>Load More...</button>
+</div>

@@ -1,0 +1,40 @@
+<div md-dialog-actions>
+    <button class="close" md-icon-button color="warn" (click)="dialogRef.close()">
+        <md-icon>cancel</md-icon>
+    </button>
+</div>
+<div md-dialog-content>
+    <md-progress-bar mode="determinate" [value]="uploader.progress" *ngIf="uploader?.queue?.length>0"></md-progress-bar>
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <input type="file" ng2FileSelect [uploader]="uploader" name="avatar" />
+        <div *ngFor="let item of uploader.queue" class="flex space-between">
+            <button md-raised-button (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess" class="mat-warn">                <i class="material-icons">save</i>                     Upload            </button>
+        </div>
+    </div>
+    <br/>
+    <md-grid-list class="media-list" rowHeight="4:3" gutterSize="12" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
+        <md-grid-tile *ngFor="let i of media" (click)="ok(i.path)">
+            <md-card class="card">
+                <button md-button md-icon-button (click)="close()" class="close"><md-icon>close</md-icon></button>
+                <md-card-header>
+                    <h3>{{i.name}}</h3>
+                </md-card-header>
+                <md-card-content fxLayout="row" fxLayoutAlign="center center">
+                    <img src="{{i.path}}" draggable="false" alt="{{i.name}}">
+                </md-card-content>
+            </md-card>
+        </md-grid-tile>
+    </md-grid-list>
+    <!--<md-card class="card" *ngFor="let p of media; let i = index;" id="{{p?._id}}">
+        <md-card-header>
+            <md-card-title>{{p.name}}</md-card-title>
+            <md-card-subtitle>{{p.path}}</md-card-subtitle>
+        </md-card-header>
+        <img md-card-image [src]="p?.path">
+        <md-card-actions>
+            <button md-button><b>Uploaded by:</b> {{p.uname}} ({{p.uemail}})</button>
+            <button md-button><b>Size:</b>{{ p.size/1024/1024 | number:'.2' }} MB</button>
+            <button md-button><b>Created:</b> {{p.createdAt}}</button>
+        </md-card-actions>
+    </md-card>-->
+</div>

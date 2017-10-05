@@ -1,0 +1,52 @@
+
+.products-container{
+    height:81vh;
+    overflow-x: hidden !important;
+}
+.filter-container{
+    overflow-x: hidden;
+}
+.product-cards{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.product-card{
+  margin: 10px;  
+  max-width: 320px; 
+}
+md-sidenav h3{
+    margin-top: 0;
+}
+md-sidenav md-divider{
+    padding: 8px 8px 10px 8px;
+}
+md-sidenav h4 {
+    text-transform: uppercase;
+    font-size: 16px;
+    /*font-weight: 400;*/
+}
+md-sidenav rzslider {
+    margin-bottom: 30px;
+}
+md-sidenav label {
+    cursor: pointer;
+}
+md-chips.md-blue-theme .md-chip {
+    color: #fff;
+    font-size: 11px;
+    height: 20px;
+    line-height: 20px;
+}
+.filter-brands{
+  max-height: 200px;
+}
+.applied-filters{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-top:5px;
+}
+.dark{
+    color: rgba(0, 0, 0, 0.54); 
+}
