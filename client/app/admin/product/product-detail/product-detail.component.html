@@ -1,0 +1,142 @@
+<div [ngBusy]="busy"></div>
+<form [formGroup]="productForm" (ngSubmit)="save(productForm.value)" autocomplete="false" novalidate>
+  <button md-fab class="floating-fab" color="accent" type="submit">
+  <md-icon>save</md-icon>
+</button>
+  <div class="app-content">
+    <div class="page-title">
+      <button mdButton type="button" md-icon-button routerLink="/admin/product">
+        <i class="material-icons pull-left">keyboard_backspace</i>
+      </button>
+      <span fxHide.lt-sm>{{header}}</span>
+      <h3>
+
+
+      </h3>
+
+    </div>
+    <section>
+      <article>
+        <h3>Product Info</h3>
+        <div class="column">
+          <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+            <md-input-container fxFlex>
+              <input mdInput type="name" name="name" formControlName="name" placeholder="Name" />
+            </md-input-container>
+            <md-input-container fxFlex>
+              <input mdInput type="slug" name="slug" formControlName="slug" placeholder="Slug" />
+            </md-input-container>
+            <md-input-container>
+              <input mdInput type="sku" name="sku" formControlName="sku" placeholder="SKU" style="width:30px" />
+            </md-input-container>
+          </div>
+          <md-input-container class="full-width">
+            <textarea mdInput name="description" formControlName="description" placeholder="Description"></textarea>
+          </md-input-container>
+        </div>
+      </article>
+      <article>
+        <h3>Settings</h3>
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
+          <md-slide-toggle class="mat-primary" formControlName="active" class="pull-left">Active</md-slide-toggle>
+          <md-slide-toggle class="mat-warn" formControlName="approved">Approved</md-slide-toggle>
+          <md-slide-toggle class="mat-accent" formControlName="hot">Hot</md-slide-toggle>
+          <md-slide-toggle class="mat-secondary" formControlName="new">New</md-slide-toggle>
+          <md-slide-toggle class="mat-secondary" formControlName="sale">Sale</md-slide-toggle>
+          <md-select placeholder="Brand" formControlName="brand" floatPlaceholder="never">
+            <md-option *ngFor="let brand of brands" [value]="brand._id">
+              {{brand.name}}
+            </md-option>
+          </md-select>
+          <md-select placeholder="Category" formControlName="category" floatPlaceholder="never">
+            <md-option *ngFor="let category of categories" [value]="category._id">
+              {{category.name}}
+            </md-option>
+          </md-select>
+        </div>
+      </article>
+    </section>
+
+    <div fxLayout="row" fxLayoutAlign="start start" fxLayoutWrap fxFlexOffset="20px">
+      <div>
+        <div class="page-title">Features
+          <button type="button" md-raised-button class="mat-primary" routerLink="/admin/features"><md-icon>spellcheck</md-icon>New Feature</button>
+        </div>
+        <md-card>
+          <md-card-content>
+            <table>
+              <tbody formArrayName="features">
+                <tr *ngFor="let f of productForm.get('features')['controls']; let i = index;">
+                  <div [formGroupName]="i">
+                    <product-features [features]="features" [group]="productForm.get('features')['controls'][i]"></product-features>
+                  </div>
+                  <td>
+                    <button type="button" md-icon-button (click)="removeFeature(i);">
+                      <md-icon>delete</md-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <button type="button" md-button class="mat-primary" (click)="addFeature()">Add another feature</button>
+          </md-card-content>
+        </md-card>
+      </div>
+
+      <div>
+        <div class="page-title">Key Features
+          <button type="button" md-raised-button class="mat-primary" routerLink="/admin/features"><md-icon>spellcheck</md-icon>New Key Feature</button></div>
+        <md-card>
+          <md-card-content>
+            <table>
+              <tbody formArrayName="keyFeatures">
+                <tr *ngFor="let f of productForm.get('keyFeatures')['controls']; let i = index;">
+                  <div [formGroupName]="i">
+                    <product-features [features]="features" [group]="productForm.get('keyFeatures')['controls'][i]"></product-features>
+                  </div>
+                  <td>
+                    <button type="button" md-icon-button (click)="removeKeyFeature(i);">
+                      <md-icon>delete</md-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <button type="button" md-button class="mat-primary" (click)="addKeyFeature()">Add another keyFeatures</button>
+          </md-card-content>
+        </md-card>
+      </div>
+      <div fxFlex>
+        <div class="page-title">Variants</div>
+        <md-card>
+          <md-card-content>
+            <table>
+              <tbody formArrayName="variants">
+                <tr *ngFor="let f of productForm.get('variants')['controls']; let i = index;">
+                  <div [formGroupName]="i">
+                    <shopnx-variants [group]="productForm.get('variants')['controls'][i]"></shopnx-variants>
+                  </div>
+                  <td>
+                    <button type="button" md-icon-button (click)="removeVariant(i);">
+                      <md-icon>delete</md-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <button type="button" md-button class="mat-primary" (click)="addVariant()">Add another variant</button>
+          </md-card-content>
+        </md-card>
+      </div>
+    </div>
+    <!--<div>
+      <div class="page-title">Record Info</div>
+      <md-card>
+        <md-card-content>
+          Created At {{product.created_at}} by {{product.vendor_name}}<br/> Modified At {{product.updated_at}} by {{product.vendor_name}}
+        </md-card-content>
+      </md-card>
+    </div>-->
+
+  </div>
+</form>

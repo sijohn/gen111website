@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    .news {
+      height: 60px;
+      margin: 10% auto;
+      overflow: hidden;
+      border-radius: 4px;
+      padding: 3px;
+      display: flex;
+      justify-content: center;
+      -webkit-user-select: none;
+    }
+
+    .news span {
+      float: left;
+      padding: 6px;
+      position: relative;
+      top: 1%;
+      border-radius: 4px;
+      font: 16px 'Source Sans Pro', Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-user-select: none;
+      cursor: pointer
+    }
+
+    .news ul {
+      float: left;
+      padding-left: 20px;
+      animation: ticker 10s cubic-bezier(1, 0, .5, 0) infinite;
+      -webkit-user-select: none
+    }
+
+    .news ul li {
+      line-height: 60px;
+      list-style: none
+    }
+
+    .news ul li a {
+      color: #999;
+      text-decoration: none;
+      font: 28px Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-user-select: none
+    }
+
+    @-webkit-keyframes ticker {
+      0% {
+        margin-top: 0
+      }
+      25% {
+        margin-top: -60px
+      }
+      50% {
+        margin-top: -120px
+      }
+      75% {
+        margin-top: -180px
+      }
+      100% {
+        margin-top: 0
+      }
+    }
+
+    @-moz-keyframes ticker {
+      0% {
+        margin-top: 0
+      }
+      25% {
+        margin-top: -60px
+      }
+      50% {
+        margin-top: -120px
+      }
+      75% {
+        margin-top: -180px
+      }
+      100% {
+        margin-top: 0
+      }
+    }
+
+    @-ms-keyframes ticker {
+      0% {
+        margin-top: 0
+      }
+      25% {
+        margin-top: -60px
+      }
+      50% {
+        margin-top: -120px
+      }
+      75% {
+        margin-top: -180px
+      }
+      100% {
+        margin-top: 0
+      }
+    }
+
+    @keyframes ticker {
+      0% {
+        margin-top: 0
+      }
+      25% {
+        margin-top: -60px
+      }
+      50% {
+        margin-top: -120px
+      }
+      75% {
+        margin-top: -180px
+      }
+      100% {
+        margin-top: 0
+      }
+    }
+  </style>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    <%= htmlWebpackPlugin.options.title %>
+  </title>
+  <meta name="description" content="<%= htmlWebpackPlugin.options.title %>">
+  <!-- base url -->
+  <base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>">
+  <% if (webpackConfig.htmlElements.headTags) { %>
+    <!-- Configured Head Tags  -->
+    <%= webpackConfig.htmlElements.headTags %>
+      <% } %>
+
+
+        <%= htmlWebpackPlugin.files.webpackManifest %>
+
+          <% if (htmlWebpackPlugin.options.metadata.isDevServer && htmlWebpackPlugin.options.metadata.HMR !== true) { %>
+            <!-- Webpack Dev Server reload -->
+            <script src="/webpack-dev-server.js"></script>
+            <% } %>
+
+              <!-- Async Google Analytics: change UA-71073175-1 to be your site's ID -->
+              <script>
+                window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date;
+                ga('create', 'UA-71073175-1', 'auto');
+                ga('send', 'pageview');
+              </script>
+              <script async src="https://www.google-analytics.com/analytics.js"></script>
+              <!-- End Google Analytics -->
+
+              <!-- CSS will be injected by webpack here -->
+              <!-- Preload link tags will be injected by webpack here -->
+
+</head>
+
+<body>
+
+  <app>
+    <div class="news">
+      <span></span>
+      <ul>
+        <li><a href="#">Contacting Server...</a></li>
+        <li><a href="#">Loading CSS...</a></li>
+        <li><a href="#">Loading Javascript...</a></li>
+        <li><a href="#">Preparing Application...</a></li>
+      </ul>
+    </div>
+  </app>
+
+  <!-- Scripts will be injected by webpack here -->
+</body>
+
+</html>

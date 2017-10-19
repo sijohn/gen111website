@@ -1,0 +1,53 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+    <h2><span class="mute">My Account</span> > Wishlist</h2>
+    <!--<md-input-container>
+        <input mdInput placeholder="Search Wishlist" [disabled]="!wishlists || wishlists.length===0">
+    </md-input-container>-->
+</div>
+<div [ngBusy]="busy"></div>
+<div class="mt20" fxLayout="column" fxLayoutAlign="center center">
+    <md-card *ngIf="!wishlists || wishlists.length===0" class="noproduct" fxLayoutAlign="center center" fxLayout="column">
+        <div>Wishlist is empty</div>
+    </md-card>
+</div>
+<md-card *ngFor="let wish of wishlists;let i = index;">
+    <button md-button md-icon-button (click)="delete(wish._id)" class="close"><md-icon>close</md-icon></button>
+    <md-card-content fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between start">
+        <div class="description" fxFlex>
+            <md-list>
+                <md-list-item fxLayout="row" fxLayout.xs="column">
+                    <img md-list-avatar [src]="wish.variant.image" class="img" onError="this.src='/assets/img/product-placeholder.png'" />
+                    <div fxFlexOffset="2">
+                        <div md-line><b><a class="product-link" routerLink="/product/{{wish.product.slug}}/{{wish.product._id}}">{{wish.product.name}}</a></b></div>
+                        <div md-line><b>Price:</b> {{wish.variant.price | currency : Settings.currency.code : true}} </div>
+                        <div md-line><b>Size:</b> {{wish.variant.size}} </div>
+                        <div md-line><b>Created:</b> {{wish.created | date}} </div>
+                        <br/>
+                        <cart-buttons [variant]="wish.variant" [product]="wish.product"></cart-buttons>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </div>
+        <div class="address" fxFlex="30" fxFlex.xs="100">
+            <div md-line><b>Features</b></div>
+            <hr/>
+            <div md-line class="mute">
+                <p md-line *ngFor="let f of wish.product.keyFeatures"> {{f.key}}: {{f.val}}</p>
+            </div>
+        </div>
+    </md-card-content>
+
+    <!--<md-card-content>
+        <md-list>
+            <md-list-item>
+                <img md-list-avatar [src]="wish.variant.image" onError="this.src='/assets/img/product-placeholder.png'" class="pull-left"
+                />
+                <h4 md-line><a routerLink="/product/{{wish.product.slug}}/{{wish.product._id}}">{{wish.product.name}}</a></h4>
+                <p md-line> Size: {{wish.variant.size}}</p>
+                <p md-line> Weight: {{wish.variant.weight}}</p>
+                <p md-line> Price: {{wish.variant.price}}</p>
+                <p md-line> Created: {{wish.created | date}} </p>
+            </md-list-item>
+        </md-list>
+    </md-card-content>-->
+</md-card>

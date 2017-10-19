@@ -1,0 +1,79 @@
+<megamenu></megamenu>
+<!--<div *ngIf="msg"> {{msg}} </div>-->
+<div class="center">
+  <div fxLayout="row" fxLayoutAlign="center start" fxLayoutWrap>
+    <md-card class="checkout-card">
+      <form [formGroup]="checkoutForm" autocomplete="false" novalidate>
+        <h3>Process Order</h3>
+        <md-card-content>
+          <table class="checkout-table">
+            <tr>
+              <td>Cart Total:</td>
+              <td>{{cart.getTotalPrice() | currency : Settings.currency.code : true}}</td>
+            </tr>
+            <tr>
+              <td>Shipping</td>
+              <td><span *ngIf="shipping?.best?.charge<=0 ">Free</span>
+                <span *ngIf="shipping?.best?.charge>0"> {{shipping?.best?.charge | currency : Settings.currency.code : true}} [{{shipping?.best?.carrier}}] Add {{shipping?.free?.freeShipping
+    - cart.getTotalPrice() | currency : Settings.currency.code : true}} more for free shipping through {{shipping?.free?.carrier}}
+    </span></td>
+              <td *ngIf="shipping?.best.charge === undefined">
+                Sorry, but no supplier supplies to your location
+              </td>
+            </tr>
+            <tr>
+              <td>Discount Coupon:</td>
+              <td>
+                <md-input-container class="w100">
+                  <input mdInput formControlName="coupon" #coupon />
+                </md-input-container>
+                <button type="button" [disabled]="couponCode" md-button (click)="applyCoupon(coupon.value)">Apply</button>
+                <button md-button (click)="removeCoupon()" *ngIf="couponCode">{{couponCode}}<md-icon>close</md-icon></button>
+              </td>
+            </tr>
+            <tr>
+              <td>Payment Method:</td>
+              <td>
+                <md-radio-group formControlName="selectedPaymentMethod">
+                  <md-radio-button *ngFor="let paymentMethod of Settings.paymentMethods" [value]="paymentMethod">
+                    {{paymentMethod}}&nbsp;&nbsp;&nbsp;&nbsp;
+                  </md-radio-button>
+                </md-radio-group>
+              </td>
+            </tr>
+            <tr>
+              <td>Total Amount:</td>
+              <td>
+                <h2>{{totalAmount | currency : Settings.currency.code : true}}</h2>
+              </td>
+            </tr>
+          </table>
+        </md-card-content>
+        <md-card-actions>
+          <button class="checkout-button circular-progress-button" md-raised-button color="primary" (click)="checkout(checkoutForm.value)"
+            [disabled]="cart.getTotalPrice()===0"><md-icon>payment</md-icon>Make Payment</button>
+        </md-card-actions>
+      </form>
+    </md-card>
+    <div *ngIf="!newAddressForm">
+      <button color="primary" class="checkout-button" md-raised-button (click)="showNewAddressForm(true)"><md-icon>add</md-icon>New Address</button>
+      <md-card *ngFor="let address of addresses; let i=index;" class="address-card" [ngClass]="{'selected': selected === address?._id }"
+        (click)="selectAddress(address)">
+        <md-card-content>
+          <h3>{{address.name}}</h3>
+          <br/> {{address.address}}, {{address.city}}, {{address.zip}}, {{address.state}}, {{address.phone}}
+        </md-card-content>
+        <md-card-actions>
+          <button md-icon-button (click)="editAddress(address)"><md-icon>edit</md-icon></button>
+          <button md-icon-button (click)="removeAddress(address)"><md-icon>delete</md-icon></button>
+        </md-card-actions>
+      </md-card>
+    </div>
+    <md-card class="address-card" *ngIf="newAddressForm">
+      <h3>Add New Address</h3>
+      <button md-button md-icon-button (click)="showNewAddressForm(false)" class="close">
+      <md-icon>close</md-icon>
+      </button>
+      <edit [item]="address" [fields]="fields" api="addresses" (save)="save($event)"></edit>
+    </md-card>
+  </div>

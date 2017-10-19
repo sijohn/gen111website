@@ -1,0 +1,45 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+  <h2><span class="mute">My Account</span> > My Address</h2>
+  <md-input-container>
+    <input mdInput placeholder="Search address" #f [disabled]="!addresses || addresses.length===0">
+  </md-input-container>
+  <button md-raised-button class="fb" (click)="switch({})">
+      <i class="material-icons">add</i>
+      <span>Add New Address</span>
+  </button>
+</div>
+<div [ngBusy]="busy"></div>
+<div *ngIf="showAddressForm" fxLayout="row" fxLayoutAlign="center start">
+  <form [formGroup]="myForm" autocomplete="false" novalidate (ngSubmit)="save(myForm.value)">
+    <md-card class="row mw350">
+      <md-toolbar class="mat-accent">
+        <h3 *ngIf="!newAddressForm">Address {{address.name}}</h3>
+        <h3 *ngIf="newAddressForm">New Address</h3>
+        <button md-button md-icon-button (click)="close()" class="close"><md-icon>close</md-icon></button>
+      </md-toolbar>
+      <md-card-content>
+        <edit [item]="address" [fields]="fields" api="addresses" (save)="save($event)"></edit>
+      </md-card-content>
+      <md-card-actions>
+      </md-card-actions>
+    </md-card>
+  </form>
+</div>
+<div *ngIf="!showAddressForm" fxLayout="row" fxLayoutAlign="center start" fxLayoutWrap>
+  <md-card *ngFor="let address of addresses | searchpipe:f.value; let i=index" class="mw350">
+    <md-toolbar class="mat-accent">
+      <h3>Address {{i + 1}}</h3>
+      <button md-button md-icon-button class="close" (click)="delete(address)"><md-icon>close</md-icon></button>
+    </md-toolbar>
+    <md-card-content (click)="switch(address)">
+      <md-list>
+        <md-list-item md-line>{{address.name}}</md-list-item><br/>
+        <md-list-item md-line>{{address.address}}</md-list-item><br/>
+        <md-list-item md-line>{{address.city}}</md-list-item><br/>
+        <md-list-item md-line>{{address.zip}}</md-list-item><br/>
+        <md-list-item md-line>{{address.state}}</md-list-item><br/>
+        <md-list-item md-line>{{address.phone}}</md-list-item>
+      </md-list>
+    </md-card-content>
+  </md-card>
+</div>

@@ -1,0 +1,32 @@
+<div [formGroup]="variantsForm">
+  <td>
+    <img src="{{variantsForm.value?.image}}" alt="" />
+  </td>
+  <td>
+    <md-input-container>
+      <input mdInput formControlName="size" placeholder="Size" />
+    </md-input-container>
+  </td>
+  <td>
+    <md-input-container>
+      <input mdInput formControlName="weight" placeholder="Weight" />
+    </md-input-container>
+  </td>
+  <td>
+    <md-input-container>
+      <input mdInput formControlName="mrp" placeholder="MRP" />
+    </md-input-container>
+  </td>
+  <td>
+    <md-input-container>
+      <input mdInput formControlName="price" placeholder="Price" />
+    </md-input-container>
+  </td>
+  <td>
+    <md-input-container>
+      <input mdInput formControlName="image" placeholder="Image" />
+      <md-icon mdPrefix (click)="chooseImage() " class="pointer ">image</md-icon>
+
+    </md-input-container>
+  </td>
+</div>
