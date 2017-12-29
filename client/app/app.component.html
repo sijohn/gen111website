@@ -1,0 +1,54 @@
+<div class="loading-overlay" *ngIf="loading">
+    <md-progress-bar mode="indeterminate" color="accent"></md-progress-bar>
+</div>
+<div [ngBusy]="busy" *ngIf="loading"></div>
+<md-sidenav-container class="example-sidenav-fab-container">
+    <md-sidenav #cart mode="over" align="end">
+        <md-toolbar color="primary">
+            <h2 class="md-toolbar-tools">Cart Details</h2>
+        </md-toolbar>
+        <md-list>
+            <md-list-item *ngFor="let i of cartItems">
+                <img md-list-avatar [src]="i?.image" onError="this.src='/assets/img/product-placeholder.png'" alt="...">
+                <h3 md-line> {{i.name}} </h3>
+                <p md-line>
+                    <span> 
+            <button md-icon-button class="mat-raised mat-primary" (click)="addItem({sku:i.sku, name:i.name, slug:i.slug, mrp:i.mrp, price:i.price, weight:i.weight, vid:i.vid}, -1)"> <i class="material-icons">remove</i> </button>
+            <button md-button class="mat-primary" routerLink="product/checkout">{{getQ(i.sku, i.vid)}}</button>
+            <button md-icon-button class="mat-raised mat-primary" (click)="addItem({sku:i.sku, name:i.name, slug:i.slug, mrp:i.mrp, price:i.price, weight:i.weight, vid:i.vid}, +1)"><i class="material-icons">add</i> </button>
+          </span>
+                </p>
+                <p md-line>
+                    {{i.price | currency:Settings.currency.code : true}} * {{i.quantity}} = {{i.price * i.quantity | currency:Settings.currency.code
+                    : true}}
+                </p>
+                <div class="close"><button md-icon-button (click)="addItem({sku:i.sku, vid: i.vid}, -10000000)"><md-icon>close</md-icon></button></div>
+                <hr/>
+            </md-list-item>
+            <h3 md-subheader>Summary</h3>
+
+            <div *ngIf="getTotalP()>0">
+                <md-list-item>
+                    <p md-line>
+                        <b>Shipping:</b>
+                        <span *ngIf="shipping?.best.charge<=0">&nbsp;Free</span>
+                        <span *ngIf="shipping?.best.charge>0">&nbsp;{{shipping?.best.charge | currency:Settings.currency.code : true}}</span>
+                    </p>
+                </md-list-item>
+                <md-list-item>
+                    <p md-line>
+                        <b>Grand Total:</b> {{getTotalP() + shipping?.best.charge | currency:Settings.currency.code : true}}
+                    </p>
+                </md-list-item>
+            </div>
+        </md-list>
+        <md-toolbar>
+            <button md-raised-button [disabled]="cartItems.length <=0" class="mat-primary" (click)="cart.close()" routerLink="/checkout"><md-icon>local_grocery_store</md-icon>Checkout →</button>
+        </md-toolbar>
+    </md-sidenav>
+    <header (openCrt)="cart.open()"> </header>
+    <div class="example-scrolling-content">
+        <router-outlet></router-outlet>
+    </div>
+    <footer></footer>
+</md-sidenav-container>

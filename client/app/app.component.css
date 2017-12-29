@@ -1,0 +1,29 @@
+html, body{
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif
+}
+
+a.active {
+  background-color: gray;
+}
+.product-image{
+    height:100px;
+    width:50px;
+}
+.column{
+    align-items: stretch;
+}
+.example-sidenav-fab-container {
+  height: 100vh;
+}
+
+.example-scrolling-content {
+  overflow: auto;
+  flex:1;
+}
+
+.example-fab {
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+}

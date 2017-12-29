@@ -1,0 +1,35 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+    <h2><span class="mute">My Account</span> > My Reviews</h2>
+    <md-input-container>
+        <input mdInput placeholder="Search Reviews" [disabled]="!reviews || reviews.length===0">
+    </md-input-container>
+</div>
+
+<div [ngBusy]="busy"></div>
+<div class="mt20" fxLayout="column" fxLayoutAlign="center center">
+    <div class="mt20" fxLayout="column" fxLayoutAlign="center start">
+        <md-card *ngIf="!reviews || reviews.length===0" class="noproduct" fxLayoutAlign="start start" fxLayout="column">
+            <div>No Reviews yet</div>
+        </md-card>
+        <md-card *ngFor="let review of reviews;let i = index;" fxFlex.gt-md="80" fxFlex.gt-sm="80" fxFlex="70" fxFlex.xs="90">
+            <md-card-header>
+                <button md-button md-icon-button (click)="delete(review._id)" class="close">
+                <md-icon>close</md-icon>
+            </button>
+                <img md-card-avatar [src]="review?.image" onError="this.src='/assets/img/product-placeholder.png'">
+                <md-card-title><a class="product-link" routerLink="/product/{{review.pslug}}/{{review.pid}}">{{review.pname}}</a></md-card-title>
+                <md-card-subtitle fxLayout="row" fxLayoutAlign="space-between center">
+                    <div fxFlex fxLayout="row">Rating:&nbsp;
+                        <div class="rating-button" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div>{{review.rating}}</div>
+                            <md-icon class="reviewRating">star</md-icon>
+                        </div>
+                    </div>
+                    Created: {{review.created | date}}</md-card-subtitle>
+            </md-card-header>
+            <md-card-content>
+                <p>{{review.message}}</p>
+            </md-card-content>
+        </md-card>
+    </div>
+</div>

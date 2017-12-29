@@ -1,0 +1,27 @@
+<div fxLayout="row">
+  <content fxLayout="column">
+    <section fxLayout="column" fxLayoutAlign="center center">
+      <h1>Cancel Order</h1>
+      <form [formGroup]="myForm" name="form" novalidate>
+        <section class="section" fxLayout="column">
+          <md-input-container>
+            <label>Reason</label>
+            <textarea name="order" rows="3" mdInput formControlName="comment"></textarea>
+            <!--<div ng-messages="form.comment.$error" ng-if="form.comment.$dirty">
+              <div ng-message="required">Reason required</div>
+            </div>-->
+          </md-input-container>
+        </section>
+        <div class="md-dialog-actions" fxLayout="column" fxLayoutAlign="center center">
+          <div class="error" fxLayoutAlign="center center">{{message}}</div>
+          <div fxLayout="row">
+            <button type="button" md-raised-button class="mat-primary" (click)="dialogRef.close({comment: myForm.value.comment})">
+            <md-icon>save</md-icon>
+            Save</button>
+            <button type="button" md-button (click)="dialogRef.close()">Cancel</button>
+          </div>
+        </div>
+      </form>
+    </section>
+  </content>
+</div>

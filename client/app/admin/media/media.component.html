@@ -1,0 +1,59 @@
+<div class="app-content cp-container">
+  <md-card>
+    <md-toolbar class="md-accent" fxLayout="row">
+      <h3>Media Library</h3>
+      <span class="app-toolbar-filler"></span>
+      <input md-raised-button color="primary" type="file" ng2FileSelect [uploader]="uploader" multiple (change)="uploader.uploadAll()"
+      />
+      <span class="app-toolbar-filler"></span>
+    </md-toolbar>
+    <div [ngBusy]="busy"></div>
+    <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)" [uploader]="uploader"
+      (change)="uploader.uploadAll()" class="well my-drop-zone">
+      Base drop zone
+    </div>
+    <div *ngIf="uploader?.queue?.length>0">
+      <h3>Upload queue ({{ uploader?.queue?.length }}) <button md-raised-button class="mat-primary" (click)="uploader.uploadAll()"><md-icon>cloud_upload</md-icon> Uplaod All</button></h3>
+      <md-progress-bar mode="determinate" [value]="uploader.progress"></md-progress-bar>
+      <table class="table">
+        <thead>
+          <tr>
+            <th width="50%">Name</th>
+            <th>Size</th>
+            <th>Progress</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of uploader.queue">
+            <td><strong>{{ item?.file?.name }}</strong></td>
+            <td nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+            <td>
+              <md-progress-bar mode="determinate" [value]="item.progress"></md-progress-bar>
+            </td>
+            <td class="text-center">
+              <span *ngIf="item.isSuccess"><md-icon>done</md-icon></span>
+              <span *ngIf="item.isError"><md-icon>error_outline</md-icon></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </md-card>
+
+  <div fxLayout="row" fxLayoutWrap fxLayoutAlign="center start">
+    <md-card class="example-card" *ngFor="let p of media; let i = index;" id="{{p?._id}}">
+      <button md-button md-icon-button (click)="delete(p._id)" class="close"><md-icon>close</md-icon></button>
+      <md-card-header>
+        <md-card-title>{{p.name}}</md-card-title>
+        <md-card-subtitle>{{p.path}}</md-card-subtitle>
+      </md-card-header>
+      <img md-card-image [src]="p?.path">
+      <div class="card-footer">
+        <b>Uploaded by:</b> {{p.uname}} ({{p.uemail}})<br/>
+        <b>Size:</b>{{ p.size/1024/1024 | number:'.1-2' }} MB<br/>
+        <b>Created:</b> {{p.createdAt | date:'medium'}}<br/>
+      </div>
+    </md-card>
+  </div>
+</div>

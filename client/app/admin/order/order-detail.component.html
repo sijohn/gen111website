@@ -1,0 +1,19 @@
+<div [ngBusy]="busy"></div>
+<div class="app-content">
+  <md-card>
+    <md-card-header class="row space-between">
+      <button type="button" md-icon-button md-mini-fab color="warn" routerLink="/admin/order">
+        <i class="material-icons pull-left">close</i>
+      </button>
+      <div class="flex">
+        {{header}}
+      </div>
+      <div>
+        <export></export>
+      </div>
+    </md-card-header>
+    <md-card-content>
+      <edit [item]="item" [cols]="cols" api="orders" (save)="saveOrder($event)"></edit>
+    </md-card-content>
+  </md-card>
+</div>

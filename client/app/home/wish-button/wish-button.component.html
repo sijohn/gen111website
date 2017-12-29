@@ -1,0 +1,7 @@
+<button *ngIf="wished" md-button class="mat-raised circular-progress-button mat-warn" (click)="toggleWishlist()">
+  <md-icon>favorite</md-icon>&nbsp;Wished
+</button>
+<button *ngIf="!wished" md-button class="mat-raised circular-progress-button mat-primary" (click)="toggleWishlist()">
+  <md-spinner color="#fff" class="app-spinner" mode="indeterminate" *ngIf="loading"></md-spinner>
+  <md-icon>favorite</md-icon>&nbsp;Add To Wishlist
+</button>

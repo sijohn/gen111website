@@ -1,0 +1,6 @@
+img{
+  max-height:40vh !important;
+}
+.mat-input-container .mat-icon{
+  cursor: pointer;
+}

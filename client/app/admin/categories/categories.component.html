@@ -1,0 +1,51 @@
+<div class="app-content cp-container">
+  <md-card>
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <h3>Categories</h3>
+      <form [formGroup]="form" (ngSubmit)="addNode(form.value,tree.treeModel)" fxLayout="row" *ngIf="showAdd">
+        <md-input-container fxFlex>
+          <input mdInput placeholder="Add new category" formControlName="name" />
+        </md-input-container>
+        <submit-button [form]="form"></submit-button>
+        <button md-icon-button *ngIf="showAdd" (click)="showAdd=false;">
+            <md-icon>close</md-icon>
+          </button>
+      </form>
+
+      <span class="app-toolbar-filler"></span>
+      <div>
+        <button md-icon-button *ngIf="showFilter" (click)="showFilter=false">
+          <md-icon>search</md-icon>
+        </button>
+        <md-input-container *ngIf="showFilter" fxFlex>
+          <input mdInput autofocus [formControl]="filterInput" placeholder="filter nodes" (keyup)="filterNodes(filterInput._value, tree)"
+          />
+        </md-input-container>
+        <button md-icon-button *ngIf="showFilter" (click)="showFilter=false;filterInput._value='';filterNodes(filterInput._value, tree)">
+          <md-icon>close</md-icon>
+        </button>
+        <button md-icon-button *ngIf="!showAdd" (click)="showAdd=true;showFilter=false;">
+          <md-icon>add</md-icon>
+        </button>
+        <button md-icon-button *ngIf="!showFilter" (click)="showFilter=true;showAdd=false;">
+          <md-icon>filter_list</md-icon>
+        </button>
+        <button md-icon-button (click)="tree.treeModel.expandAll()"><md-icon>expand_more</md-icon></button>
+        <button md-icon-button (click)="tree.treeModel.collapseAll()"><md-icon>expand_less</md-icon></button>
+      </div>
+    </div>
+
+    <div id="exportable">
+      <div style="height: 90vh; width: 600px">
+        <tree-root #tree [nodes]="categories" [options]="customTemplateStringOptions" [focused]="true" (moveNode)="moveNode($event)">
+          <ng-template #treeNodeTemplate let-node>
+            <div (mouseenter)="mouse($event,true)" (mouseleave)="mouse($event,false)">
+              <span title="{{node.data.subTitle}}">{{ node.data.name }}</span>
+              <span class="pull-right">{{ childrenCount(node) }}</span>
+              <button class="nodisplay" md-icon-button (click)="removeNode(node,tree.treeModel)"><md-icon>delete</md-icon></button>
+            </div>
+          </ng-template>
+          <ng-template #loadingTemplate>Loading, please hold....</ng-template>
+        </tree-root>
+      </div>
+    </div>

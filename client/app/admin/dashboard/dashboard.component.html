@@ -1,0 +1,16 @@
+<md-sidenav-container>
+  <div class="app-content">
+    <h2>Dashboard</h2>
+    <div class="dashboard-cards">
+      <div *ngFor="let i of (cards | dashboardFilter:'dashboard')">
+        <div class="gradient-card" [ngClass]="i.color" *ngIf="auth.hasRole(i.authenticate)" [routerLink]="i.url">
+          <md-icon>{{i.icon}}</md-icon>
+          <div class="content">
+            <div class="header">{{i.name}}</div>
+            <div>&nbsp;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</md-sidenav-container>
